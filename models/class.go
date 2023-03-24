@@ -20,7 +20,7 @@ func (c *Class) All() []Class {
 	return classes
 }
 
-func (c *Class) Find(id uint) {
+func (c *Class) Find(id string) {
 	db.Db.Model(c).Preload("Students").Preload("Teacher").First(c, id)
 }
 
@@ -28,6 +28,6 @@ func (c *Class) Create() {
 	db.Db.Create(c)
 }
 
-func (c *Class) Delete(id uint) {
+func (c *Class) Delete(id string) {
 	db.Db.Delete(c, id)
 }

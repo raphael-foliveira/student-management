@@ -23,9 +23,9 @@ func (t *Teacher) Create() {
 	db.Db.Model(t).Preload("Classes").Create(t)
 }
 
-func (t *Teacher) Find(id uint) {
+func (t *Teacher) Find(id string) {
 	db.Db.First(t, id)
 }
-func (t *Teacher) Delete(id uint) {
+func (t *Teacher) Delete(id string) {
 	db.Db.Delete(t, id)
 }

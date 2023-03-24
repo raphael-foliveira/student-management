@@ -3,7 +3,6 @@ package controllers
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/raphael-foliveira/studentManagementSystem/models"
@@ -16,14 +15,12 @@ func ListClasses(c *gin.Context) {
 }
 
 func RetrieveClass(c *gin.Context) {
-	classId, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, "invalid id")
+	class := models.Class{}
+	class.Find(c.Param("id"))
+	if class.ID == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Class not found"})
 		return
 	}
-	fmt.Println(classId)
-	class := models.Class{}
-	class.Find(uint(classId))
 	c.JSON(http.StatusOK, class)
 }
 
@@ -39,12 +36,11 @@ func CreateClass(c *gin.Context) {
 }
 
 func DeleteClass(c *gin.Context) {
-	classId, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, "invalid id")
+	class := models.Class{}
+	class.Delete(c.Param("id"))
+	if class.ID == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Class not found"})
 		return
 	}
-	class := models.Class{}
-	class.Delete(uint(classId))
 	c.JSON(http.StatusNoContent, nil)
 }

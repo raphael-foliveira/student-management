@@ -3,7 +3,6 @@ package controllers
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/raphael-foliveira/studentManagementSystem/models"
@@ -16,13 +15,12 @@ func ListStudents(c *gin.Context) {
 }
 
 func RetrieveStudent(c *gin.Context) {
-	studentId, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, "invalid id")
+	student := models.Student{}
+	student.Find(c.Param("id"))
+	if student.ID == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Student not found"})
 		return
 	}
-	student := models.Student{}
-	student.Find(uint(studentId))
 	c.JSON(http.StatusOK, student)
 }
 
@@ -39,30 +37,24 @@ func CreateStudent(c *gin.Context) {
 }
 
 func UpdateStudent(c *gin.Context) {
-	studentId, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, "invalid id")
+	student := models.Student{}
+	student.Find(c.Param("id"))
+	if student.ID == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Student not found"})
 		return
 	}
-	student := models.Student{}
-	student.Find(uint(studentId))
 	if err := c.BindJSON(&student); err != nil {
 		fmt.Println(err)
 		c.JSON(http.StatusBadRequest, err)
 		return
 	}
 	fmt.Println("about to run Update()")
-	student.Update(uint(studentId))
+	student.Update(c.Param("id"))
 	c.JSON(http.StatusOK, student)
 }
 
 func DeleteStudent(c *gin.Context) {
-	studentId, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, "invalid id")
-		return
-	}
 	student := models.Student{}
-	student.Delete(uint(studentId))
+	student.Delete(c.Param("id"))
 	c.JSON(http.StatusNoContent, nil)
 }

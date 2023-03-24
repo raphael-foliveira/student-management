@@ -26,7 +26,5 @@ func GetDb() (err error) {
 		return err
 	}
 
-	fmt.Println("running migrations...")
-
 	return nil
 }

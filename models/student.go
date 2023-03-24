@@ -22,7 +22,7 @@ func (s *Student) All() []Student {
 	return students
 }
 
-func (s *Student) Find(id uint) {
+func (s *Student) Find(id string) {
 	db.Db.Model(s).Preload("Classes.Teacher").First(s, id)
 }
 
@@ -30,11 +30,11 @@ func (s *Student) Create() {
 	db.Db.Create(s)
 }
 
-func (s *Student) Update(id uint) {
+func (s *Student) Update(id string) {
 	db.Db.Find(s, id)
 	db.Db.Save(s)
 }
 
-func (s *Student) Delete(id uint) {
+func (s *Student) Delete(id string) {
 	db.Db.Delete(s, id)
 }

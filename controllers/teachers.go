@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"strconv"
-
 	"github.com/gin-gonic/gin"
 	"github.com/raphael-foliveira/studentManagementSystem/models"
 )
@@ -24,22 +22,21 @@ func ListTeachers(c *gin.Context) {
 }
 
 func RetrieveTeacher(c *gin.Context) {
-	teacherId, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(400, "invalid id")
+	teacher := models.Teacher{}
+	teacher.Find(c.Param("id"))
+	if teacher.ID == 0 {
+		c.JSON(404, gin.H{"error": "Teacher not found"})
 		return
 	}
-	teacher := models.Teacher{}
-	teacher.Find(uint(teacherId))
 	c.JSON(200, teacher)
 }
 
 func DeleteTeacher(c *gin.Context) {
-	teacherId, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.JSON(400, "invalid id")
-	}
 	teacher := models.Teacher{}
-	teacher.Delete(uint(teacherId))
+	teacher.Delete(c.Param("id"))
+	if teacher.ID == 0 {
+		c.JSON(404, gin.H{"error": "Teacher not found"})
+		return
+	}
 	c.JSON(204, nil)
 }
