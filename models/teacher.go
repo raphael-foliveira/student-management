@@ -1,6 +1,8 @@
 package models
 
 import (
+	"strconv"
+
 	"github.com/raphael-foliveira/studentManagementSystem/db"
 	"gorm.io/gorm"
 )
@@ -23,9 +25,19 @@ func (t *Teacher) Create() {
 	db.Db.Model(t).Preload("Classes").Create(t)
 }
 
-func (t *Teacher) Find(id string) {
-	db.Db.First(t, id)
+func (t *Teacher) Find(id string) error {
+	intId, err := strconv.Atoi(id)
+	if err != nil {
+		return err
+	}
+	db.Db.First(t, intId)
+	return nil
 }
-func (t *Teacher) Delete(id string) {
-	db.Db.Delete(t, id)
+func (t *Teacher) Delete(id string) error {
+	intId, err := strconv.Atoi(id)
+	if err != nil {
+		return err
+	}
+	db.Db.Delete(t, intId)
+	return nil
 }
