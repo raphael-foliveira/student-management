@@ -5,13 +5,12 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/raphael-foliveira/studentManagementSystem/pkg/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-var Db *gorm.DB
-
-func GetDb() (err error) {
+func GetDb() (*gorm.DB, error) {
 	godotenv.Load()
 	dsn := fmt.Sprint(
 		"host="+os.Getenv("DB_HOST"),
@@ -21,10 +20,16 @@ func GetDb() (err error) {
 		" port="+os.Getenv("DB_PORT"),
 		" sslmode="+os.Getenv("DB_SSL_MODE"),
 	)
-	Db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		return err
+		return nil, err
 	}
+	db.AutoMigrate(
+		&models.Student{},
+		&models.Teacher{},
+		&models.Class{},
+		&models.StudentClasses{},
+	)
 
-	return nil
+	return db, nil
 }
