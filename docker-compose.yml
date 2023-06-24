@@ -8,6 +8,8 @@ services:
       POSTGRES_DB: student_management
     ports:
       - "5432:5432"
+    volumes:
+      - ./.data:/var/lib/postgresql/
 
   app:
     container_name: student_management_app
@@ -22,4 +24,7 @@ services:
       - DB_PORT=5432
       - DB_SSL_MODE=disable
     volumes:
-      - .:/app
+      - ./cmd:/app/cmd
+      - ./pkg:/app/pkg
+    depends_on:
+      - db
