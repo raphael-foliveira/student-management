@@ -8,17 +8,16 @@ import (
 	"gorm.io/gorm"
 )
 
-func addClassesRoutes(router *gin.Engine, db *gorm.DB) {
+func addClassesRoutes(router *gin.RouterGroup, db *gorm.DB) {
 	classesRepository := repository.NewClassRepository(db)
 	classesController := controllers.NewClassesController(classesRepository)
-	classes := router.Group("/classes")
-	classes.Use(middleware.Auth)
-	classes.GET("/", classesController.ListClasses)
-	classes.GET("/:id", classesController.RetrieveClass)
+	router.Use(middleware.Auth)
+	router.GET("/", classesController.ListClasses)
+	router.GET("/:id", classesController.RetrieveClass)
 
-	classes.POST("/", classesController.CreateClass)
+	router.POST("/", classesController.CreateClass)
 
-	classes.DELETE("/:id", classesController.DeleteClass)
+	router.DELETE("/:id", classesController.DeleteClass)
 
-	// classes.POST("/:id/students/:studentId", classesController.AddStudentToClass)
+	// router.POST("/:id/students/:studentId", classesController.AddStudentToClass)
 }

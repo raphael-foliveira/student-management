@@ -11,9 +11,8 @@ func Start() {
 		panic(err)
 	}
 	router := gin.Default()
-	addStudentsRoutes(router, database)
-	addClassesRoutes(router, database)
-	addTeachersRoutes(router, database)
-
+	addStudentsRoutes(router.Group("/students"), database)
+	addClassesRoutes(router.Group("/classes"), database)
+	addTeachersRoutes(router.Group("/teachers"), database)
 	router.Run(":8000")
 }

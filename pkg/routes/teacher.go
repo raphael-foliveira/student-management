@@ -7,16 +7,15 @@ import (
 	"gorm.io/gorm"
 )
 
-func addTeachersRoutes(router *gin.Engine, db *gorm.DB) {
+func addTeachersRoutes(router *gin.RouterGroup, db *gorm.DB) {
 	teachersRepository := repository.NewTeacherRepository(db)
 	teachersController := controllers.NewTeachersController(teachersRepository)
 
-	teachers := router.Group("/teachers")
-	teachers.GET("/", teachersController.ListTeachers)
-	teachers.GET("/:id", teachersController.RetrieveTeacher)
+	router.GET("/", teachersController.ListTeachers)
+	router.GET("/:id", teachersController.RetrieveTeacher)
 
-	teachers.POST("/", teachersController.CreateTeacher)
-	// teachers.PUT("/:id", teachersController.UpdateTeacher)
+	router.POST("/", teachersController.CreateTeacher)
+	// router.PUT("/:id", teachersController.UpdateTeacher)
 
-	teachers.DELETE("/:id", teachersController.DeleteTeacher)
+	router.DELETE("/:id", teachersController.DeleteTeacher)
 }

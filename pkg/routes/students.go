@@ -7,17 +7,16 @@ import (
 	"gorm.io/gorm"
 )
 
-func addStudentsRoutes(router *gin.Engine, db *gorm.DB) {
+func addStudentsRoutes(router *gin.RouterGroup, db *gorm.DB) {
 	studentsRepository := repository.NewStudentRepository(db)
 	studentsController := controllers.NewStudentsController(studentsRepository)
-	students := router.Group("/students")
 	// students.Use(middleware.Auth())
 
-	students.GET("/", studentsController.ListStudents)
-	students.GET("/:id", studentsController.RetrieveStudent)
+	router.GET("/", studentsController.ListStudents)
+	router.GET("/:id", studentsController.RetrieveStudent)
 
-	students.POST("/", studentsController.CreateStudent)
-	// students.PUT("/:id", studentsController.UpdateStudent)
+	router.POST("/", studentsController.CreateStudent)
+	// router.PUT("/:id", studentsController.UpdateStudent)
 
-	students.DELETE("/:id", studentsController.DeleteStudent)
+	router.DELETE("/:id", studentsController.DeleteStudent)
 }
