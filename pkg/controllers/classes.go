@@ -18,7 +18,7 @@ func NewClassesController(repo repository.Repository[models.Class]) *ClassesCont
 	return &ClassesController{repo: repo}
 }
 
-func (cc *ClassesController) ListClasses(c *gin.Context) {
+func (cc *ClassesController) List(c *gin.Context) {
 	classes, err := cc.repo.All()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
@@ -27,7 +27,7 @@ func (cc *ClassesController) ListClasses(c *gin.Context) {
 	c.JSON(http.StatusOK, classes)
 }
 
-func (cc *ClassesController) RetrieveClass(c *gin.Context) {
+func (cc *ClassesController) Retrieve(c *gin.Context) {
 	intId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err)
@@ -45,7 +45,7 @@ func (cc *ClassesController) RetrieveClass(c *gin.Context) {
 	c.JSON(http.StatusOK, class)
 }
 
-func (cc *ClassesController) CreateClass(c *gin.Context) {
+func (cc *ClassesController) Create(c *gin.Context) {
 	var newClass models.Class
 	if err := c.BindJSON(&newClass); err != nil {
 		fmt.Println(err)
@@ -61,7 +61,7 @@ func (cc *ClassesController) CreateClass(c *gin.Context) {
 	c.JSON(http.StatusCreated, newClass)
 }
 
-func (cc *ClassesController) DeleteClass(c *gin.Context) {
+func (cc *ClassesController) Delete(c *gin.Context) {
 	intId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err)

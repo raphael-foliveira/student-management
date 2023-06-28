@@ -17,7 +17,7 @@ func NewTeachersController(repo repository.Repository[models.Teacher]) *Teachers
 	return &TeachersController{repo: repo}
 }
 
-func (tc *TeachersController) CreateTeacher(c *gin.Context) {
+func (tc *TeachersController) Create(c *gin.Context) {
 	var teacher models.Teacher
 	if err := c.BindJSON(&teacher); err != nil {
 		c.JSON(http.StatusBadRequest, err)
@@ -31,7 +31,7 @@ func (tc *TeachersController) CreateTeacher(c *gin.Context) {
 	c.JSON(http.StatusCreated, teacher)
 }
 
-func (tc *TeachersController) ListTeachers(c *gin.Context) {
+func (tc *TeachersController) List(c *gin.Context) {
 	teachers, err := tc.repo.All()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
@@ -40,7 +40,7 @@ func (tc *TeachersController) ListTeachers(c *gin.Context) {
 	c.JSON(http.StatusOK, teachers)
 }
 
-func (tc *TeachersController) RetrieveTeacher(c *gin.Context) {
+func (tc *TeachersController) Retrieve(c *gin.Context) {
 	intId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err)
@@ -58,7 +58,7 @@ func (tc *TeachersController) RetrieveTeacher(c *gin.Context) {
 	c.JSON(http.StatusOK, teacher)
 }
 
-func (tc *TeachersController) DeleteTeacher(c *gin.Context) {
+func (tc *TeachersController) Delete(c *gin.Context) {
 	intId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err)
