@@ -13,11 +13,11 @@ func addStudentsRoutes(router *gin.Engine, db *gorm.DB) {
 	students := router.Group("/students")
 	// students.Use(middleware.Auth())
 
-	students.GET("/", studentsController.ListStudents)
-	students.GET("/:id", studentsController.RetrieveStudent)
+	students.GET("/", studentsController.List)
+	students.GET("/:id", studentsController.Retrieve)
 
-	students.POST("/", studentsController.CreateStudent)
+	students.POST("/", studentsController.Create)
 	// students.PUT("/:id", studentsController.UpdateStudent)
 
-	students.DELETE("/:id", studentsController.DeleteStudent)
+	students.DELETE("/:id", studentsController.Delete)
 }

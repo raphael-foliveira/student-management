@@ -12,11 +12,11 @@ func addTeachersRoutes(router *gin.Engine, db *gorm.DB) {
 	teachersController := controllers.NewTeachersController(teachersRepository)
 
 	teachers := router.Group("/teachers")
-	teachers.GET("/", teachersController.ListTeachers)
-	teachers.GET("/:id", teachersController.RetrieveTeacher)
+	teachers.GET("/", teachersController.List)
+	teachers.GET("/:id", teachersController.Retrieve)
 
-	teachers.POST("/", teachersController.CreateTeacher)
+	teachers.POST("/", teachersController.Create)
 	// teachers.PUT("/:id", teachersController.UpdateTeacher)
 
-	teachers.DELETE("/:id", teachersController.DeleteTeacher)
+	teachers.DELETE("/:id", teachersController.Delete)
 }

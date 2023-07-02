@@ -13,12 +13,12 @@ func addClassesRoutes(router *gin.Engine, db *gorm.DB) {
 	classesController := controllers.NewClassesController(classesRepository)
 	classes := router.Group("/classes")
 	classes.Use(middleware.Auth)
-	classes.GET("/", classesController.ListClasses)
-	classes.GET("/:id", classesController.RetrieveClass)
+	classes.GET("/", classesController.List)
+	classes.GET("/:id", classesController.Retrieve)
 
-	classes.POST("/", classesController.CreateClass)
+	classes.POST("/", classesController.Create)
 
-	classes.DELETE("/:id", classesController.DeleteClass)
+	classes.DELETE("/:id", classesController.Delete)
 
 	// classes.POST("/:id/students/:studentId", classesController.AddStudentToClass)
 }

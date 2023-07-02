@@ -18,7 +18,7 @@ func NewStudentsController(repo repository.Repository[models.Student]) *Students
 	return &StudentsController{repo: repo}
 }
 
-func (sc *StudentsController) ListStudents(c *gin.Context) {
+func (sc *StudentsController) List(c *gin.Context) {
 	students, err := sc.repo.All()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err)
@@ -27,7 +27,7 @@ func (sc *StudentsController) ListStudents(c *gin.Context) {
 	c.JSON(http.StatusOK, students)
 }
 
-func (sc *StudentsController) RetrieveStudent(c *gin.Context) {
+func (sc *StudentsController) Retrieve(c *gin.Context) {
 	intId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err)
@@ -45,7 +45,7 @@ func (sc *StudentsController) RetrieveStudent(c *gin.Context) {
 	c.JSON(http.StatusOK, student)
 }
 
-func (sc *StudentsController) CreateStudent(c *gin.Context) {
+func (sc *StudentsController) Create(c *gin.Context) {
 	var newStudent models.Student
 	fmt.Println("creating student")
 	if err := (c.BindJSON(&newStudent)); err != nil {
@@ -61,7 +61,7 @@ func (sc *StudentsController) CreateStudent(c *gin.Context) {
 	c.JSON(http.StatusCreated, newStudent)
 }
 
-func (sc *StudentsController) DeleteStudent(c *gin.Context) {
+func (sc *StudentsController) Delete(c *gin.Context) {
 	intId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err)
